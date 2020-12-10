@@ -1,0 +1,17 @@
+body {
+  background: #973535;
+}
+
+.my-nav {
+  margin-left: 500px !important;
+}
+h1{
+  text-align: center;
+}
+
+
+p {
+  text-align: center;
+  padding: 0 200px;
+}
+
