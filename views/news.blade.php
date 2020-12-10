@@ -6,7 +6,6 @@ News
 
 
 
-
 @section('content')
 
 

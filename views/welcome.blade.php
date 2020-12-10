@@ -7,7 +7,6 @@ Welcome
 
 
 
-
 @section('content')
 
 
