@@ -11,6 +11,6 @@ NewsCat
 @section('content')
 
 
-<h1>NewsCat</h1>
+<h1>Новости</h1>
 
 @endsection
