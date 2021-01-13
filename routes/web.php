@@ -1,6 +1,7 @@
 <?php
 
-use App\Http\Controllers\WelcomeController;
+use App\Http\Controllers\NewsController;
+use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', 'WelcomeController@Welcome')->name('Welcome');
@@ -12,3 +13,54 @@ Route::get('/login', 'LoginController@Login')->name('Login');
 Route::get('/AddNews', 'AddNewsController@AddNews')->name('AddNews');
 
 Route::post('/AddNews/submit', 'AddNewsController@Add') ->name('AddNews-form');
+
+// Route::get('/', function () {
+//     return view('Welcome');
+// })->name('home');
+
+/**
+ * Новости
+ */
+
+Route::group([
+   'prefix' => 'news',
+   'as' => 'news::',
+], function () {
+    Route::get('/',  [NewsController::class, 'index'])
+        ->name('categories');
+
+    Route::get('/card/{id}', [NewsController::class, 'newsCard'])
+        ->name('card')
+        ->where('id', '[0-9]+');
+
+    Route::get('/{categoryId}', [NewsController::class, 'list'])
+        ->name('list')
+        ->where('categoryId', '[0-9]+');
+});
+
+/**
+ * Админка новостей
+ */
+Route::group([
+    'prefix' => '/admin/news',
+    'as' => 'admin::news::',
+    'namespace' => '\App\Http\Controllers\Admin'
+], function () {
+    Route::get('/', 'NewsController@index')
+        ->name('index');
+
+    Route::match(['get','post'], '/create', 'NewsController@create')
+        ->name('create');
+
+    Route::match(['post'], '/save', 'NewsController@save')
+        ->name('save');
+
+    Route::get('/update/{id}', 'NewsController@update')
+        ->name('update');
+
+    Route::get('/delete/{id}', 'NewsController@delete')
+        ->name('delete');
+});
+
+Route::get('/db', [\App\Http\Controllers\DbController::class, 'index']);
+
