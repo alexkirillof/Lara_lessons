@@ -5,7 +5,7 @@
     <a class="p-2 text-dark" href="{{ route('NewsCat') }}">NewsCat</a>
     <a class="p-2 text-dark" href="{{ route('Login') }}">Login</a>
     <a class="p-2 text-dark" href="{{ route('AddNews') }}">AddNews</a>
-    <a class="p-2 text-dark" href="{{ route('Login') }}">Admin</a>
+    <a class="p-2 text-dark" href="{{ route('admin::news::index') }}">Admin</a>
 
 
   </nav>
