@@ -35,7 +35,7 @@
                 <input type="hidden" name="id" value="{{$model->id}}">
                 @endif
                 <div class="form-group">
-                    <label>{{__('test.news_title')}}</label>
+                    <label>name</label>
                     {!! Form::text("title",$model->title ?? old('title'), ['class' => "form-control"]) !!}
                     @error('title')
                     <div class="alert alert-danger">{{ $message }}</div>
