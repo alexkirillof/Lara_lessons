@@ -21,7 +21,9 @@ class NewsController extends Controller
     public function create()
     {
 
-        return view("admin.news.create", [
+        return view(
+            "admin.news.create",
+            [
                 'model' => new News(),
                 'categories' => $this->getCategoriesList()
             ]
@@ -30,15 +32,18 @@ class NewsController extends Controller
 
     public function update($id)
     {
-        return view("admin.news.create", [
+        return view(
+            "admin.news.create",
+            [
                 'model' => News::find($id),
                 'categories' => $this->getCategoriesList()
             ]
         );
     }
 
-    public function save(AdminNewsSaveRequest $request)
+    public function save(AdminSRequest $request)
     {
+
         $id = $request->post('id');
         /** @var News $model */
         $model = $id ? News::find($id) : new News();

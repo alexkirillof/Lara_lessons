@@ -39,13 +39,22 @@ class News extends Model
 
     protected $fillable = [
         'id',
-        'title',
+        'name',
         'description',
         'source',
         'publish_date',
         'category_id'
     ];
-
+    public static function rules()
+    {
+        return [
+            'name' => 'required|min:10|max:255|unique:news',
+            'description' => 'required',
+            'category_id' => 'required|exists:categories,id|integer',
+            'actual' => 'boolean',
+            'publish_date' => 'date'
+        ];
+    }
    
 
     public function getByCategoryId(int $categoryId)
