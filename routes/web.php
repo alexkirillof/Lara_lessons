@@ -12,7 +12,7 @@ Route::get('/login', 'LoginController@Login')->name('Login');
 
 Route::get('/AddNews', 'AddNewsController@AddNews')->name('AddNews');
 
-Route::post('/AddNews/submit', 'AddNewsController@Add') ->name('AddNews-form');
+Route::post('/AddNews/submit', 'AddNewsController@Add')->name('AddNews-form');
 
 // Route::get('/', function () {
 //     return view('Welcome');
@@ -23,8 +23,8 @@ Route::post('/AddNews/submit', 'AddNewsController@Add') ->name('AddNews-form');
  */
 
 Route::group([
-   'prefix' => 'news',
-   'as' => 'news::',
+    'prefix' => 'news',
+    'as' => 'news::',
 ], function () {
     Route::get('/',  [NewsController::class, 'index'])
         ->name('categories');
@@ -49,7 +49,7 @@ Route::group([
     Route::get('/', 'NewsController@index')
         ->name('index');
 
-    Route::match(['get','post'], '/create', 'NewsController@create')
+    Route::match(['get', 'post'], '/create', 'NewsController@create')
         ->name('create');
 
     Route::match(['post'], '/save', 'NewsController@save')
@@ -62,5 +62,20 @@ Route::group([
         ->name('delete');
 });
 
-Route::get('/db', [\App\Http\Controllers\DbController::class, 'index']);
+Route::match(
+    ['get', 'post'],
+    '/admin/profile/update',
+    '\App\Http\Controllers\Admin\ProfileController@update'
+)->name('admin::profile::update');
 
+Route::get('login', '\App\Http\Controllers\Auth\LoginController@showLoginForm')->name('login');
+Route::post('login', '\App\Http\Controllers\Auth\LoginController@login');
+Route::post('logout', '\App\Http\Controllers\Auth\LoginController@logout')->name('logout');
+
+
+Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+
+
+
+Route::get('/db', [\App\Http\Controllers\DbController::class, 'index']);
