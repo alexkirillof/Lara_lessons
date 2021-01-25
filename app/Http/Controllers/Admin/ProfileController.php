@@ -3,53 +3,28 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Admin\Profile\EditRequest;
+use Illuminate\Foundation\Auth\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ProfileController extends Controller
 {
-    /**
-     * @param Request $request
-     * @return \Illuminate\Contracts\Foundation\Application|\Illuminate\Contracts\View\Factory|\Illuminate\Contracts\View\View|\Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Validation\ValidationException
-     */
-    public function update(Request $request)
+    public function show()
     {
-        $user = \Auth::user();
-        if(!$user->is_admin){
-            return redirect()->route('home');
-        }
-        $errors = [];
-        if ($request->isMethod('post')) {
-            $password = $request->post('password');
-            if (\Hash::check($request->post('current_password'), $user->password)) {
-                if ($this->validate($request, $this->validateRules())) {
-                    if (!empty($password)) {
-                        $user->password = \Hash::make($password);
-                    }
-                    $user->name = $request->post('name');
-                    $user->email = $request->post('email');
-
-                    $user->save();
-                }
-            } else {
-                $errors['current_password'][] = 'Пароль указан неверно';
-            }
-            return redirect()->route('admin::profile::update')
-                ->withErrors($errors);
-        }
-
-
-        return view('admin.profile.update', ['user' => $user]);
+        return view('admin.profile.update', ['user' => Auth::user()]);
     }
 
-
-    protected function validateRules()
+    public function update(EditRequest $request)
     {
-        return [
-            'name' => 'required|string|max:10',
-            'email' => 'required|email|unique:users,email',
-            'password' => 'string|min:3',
-            'current_password' => 'required',
-        ];
+        $user = Auth::user();
+        $password = $request->post('password');
+        if (!empty($password)) {
+            $user->password = \Hash::make($password);
+        }
+        $user->name = $request->post('name');
+        $user->email = $request->post('email');
+        $user->save();
+        return redirect()->route('admin::profile::show');
     }
 }
