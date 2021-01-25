@@ -1,7 +1,11 @@
 <?php
 
 return [
-
+    'vkontakte' => [
+        'client_id' => env('VK_KEY'),
+        'client_secret' => env('VK_SECRET'),
+        'redirect' => env('VK_REDIRECT_URI')
+    ],
     /*
     |--------------------------------------------------------------------------
     | Third Party Services
