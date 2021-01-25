@@ -79,3 +79,41 @@ Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name
 
 
 Route::get('/db', [\App\Http\Controllers\DbController::class, 'index']);
+
+
+Route::group([
+    'prefix' => 'admin/',
+    'namespace' => '\App\Http\Controllers\Admin',
+    'as' => 'admin::',
+    'middleware' => ['auth', 'check_admin']
+], function () use ($adminNewsRoutes) {
+    $adminNewsRoutes();
+    //Профиль
+    Route::group([
+        'prefix' => 'profile',
+        'as' => 'profile::',
+    ], function () {
+        Route::post(
+            'update',
+            'ProfileController@update',
+        )->name('update');
+
+        Route::get(
+            'show',
+            'ProfileController@show',
+        )->name('show');
+    });
+
+    Route::get("parser", [ParserController::class, 'index'])
+        ->name('parser');
+});
+
+Route::group([
+    'prefix' => 'social',
+    'as' => 'social::',
+], function () {
+    Route::get('/login', [SocialController::class, 'loginVk'])
+        ->name('login-vk');
+    Route::get('/response', [SocialController::class, 'responseVk'])
+        ->name('response-vk');
+});
